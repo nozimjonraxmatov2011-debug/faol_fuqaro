@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9-sinf BSB-1: Faol fuqaro – o‘zgarishlar tashabbuskori</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #071f0e;
+            --card-bg: rgba(13, 40, 20, 0.90);
+            --neon-green: #00ff66;
+            --eco-green: #2ecc71;
+            --mint: #a8ffb2;
+            --text-light: #e0f8e5;
+            --accent-glow: rgba(0, 255, 102, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewport='0 0 24 24' style='fill:rgb(0,255,102);font-size:16px;'><text y='20'>🌿</text></svg>"), auto;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at 50% 30%, #113f1e 0%, #071f0e 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .leaf-particle {
+            position: absolute;
+            pointer-events: none;
+            font-size: 18px;
+            animation: fallLeaf 1s linear forwards;
+            z-index: 9999;
+        }
+
+        @keyframes fallLeaf {
+            0% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); }
+            100% { opacity: 0; transform: translate(var(--rand-x), 40px) scale(0.5) rotate(180deg); }
+        }
+
+        .fire-particle {
+            position: absolute;
+            pointer-events: none;
+            font-size: 22px;
+            animation: riseFire 0.8s ease-out forwards;
+            z-index: 9999;
+        }
+
+        @keyframes riseFire {
+            0% { opacity: 1; transform: translate(0, 0) scale(1.2); }
+            100% { opacity: 0; transform: translate(var(--fire-x), -60px) scale(0.2); }
+        }
+
+        header {
+            text-align: center;
+            padding: 2.5rem 1rem 1rem 1rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--neon-green);
+            text-shadow: 0 0 20px var(--accent-glow);
+            letter-spacing: 1px;
+        }
+
+        header p {
+            color: var(--mint);
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 1.5rem 1rem;
+            z-index: 10;
+            position: relative;
+        }
+
+        .tab-btn {
+            background: rgba(13, 40, 20, 0.9);
+            border: 2px solid var(--eco-green);
+            color: var(--text-light);
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.2);
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            background: var(--eco-green);
+            color: var(--bg-dark);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 25px var(--neon-green);
+            transform: translateY(-3px);
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto 4rem auto;
+            padding: 0 1.5rem;
+            position: relative;
+        }
+
+        .content-section {
+            display: none;
+            background: var(--card-bg);
+            border: 2px solid rgba(46, 204, 113, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--neon-green);
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
+            border-bottom: 2px solid rgba(46, 204, 113, 0.2);
+            padding-bottom: 0.5rem;
+        }
+
+        p, li {
+            margin-bottom: 1rem;
+            font-size: 0.98rem;
+            color: #d1ffd6;
+            line-height: 1.7;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.2rem;
+        }
+
+        strong {
+            color: var(--neon-green);
+        }
+
+        /* Stat/Progress Bars */
+        .stat-bar {
+            margin-bottom: 1.2rem;
+        }
+        .stat-title {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+        .bar-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 18px;
+            overflow: hidden;
+            border: 1px solid var(--eco-green);
+        }
+        .bar-fill {
+            background: linear-gradient(90deg, var(--eco-green), var(--neon-green));
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        /* Grid layouts */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.2rem;
+        }
+
+        .mini-card {
+            background: rgba(7, 31, 14, 0.85);
+            border: 1px solid var(--eco-green);
+            padding: 1.2rem;
+            border-radius: 14px;
+        }
+
+        .mini-card h3 {
+            color: var(--mint);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        th, td {
+            border: 1px solid var(--eco-green);
+            padding: 10px;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+        th {
+            background: rgba(46, 204, 113, 0.2);
+            color: var(--neon-green);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #6da37b;
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(46, 204, 113, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.6rem; }
+            .content-section { padding: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>9-SINF BSB-1 LOYIHA ISHI <p><p></p></p>
+            <h2>Rahmatov Nozimjon</h2>
+        </h1>
+        <p>Tarbiya hamda Davlat va huquq asoslari fanlari integratsiyasi</p>
+        
+    </header>
+
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab(event, 'sec1')">1. Ta'rif va Fazilatlar</button>
+        <button class="tab-btn" onclick="switchTab(event, 'sec2')">2. Muammo va So'rovnoma</button>
+        <button class="tab-btn" onclick="switchTab(event, 'sec3')">3. Huquqiy Tahlil</button>
+        <button class="tab-btn" onclick="switchTab(event, 'sec4')">4. Yechimlar va Reja</button>
+        <button class="tab-btn" onclick="switchTab(event, 'sec5')">5. Yakuniy Xulosa</button>
+    </div>
+
+    <div class="container">
+
+        <!-- 1-BO'LIM -->
+        <div id="sec1" class="content-section active">
+            <h2>🌿 1. "Faol fuqaro" tushunchasi va uning 5 ta fazilati</h2>
+            <p><strong>Jamoa ta'rifi:</strong> Faol fuqaro — bu o‘z huquq va burchlarini chuqur anglagan, jamiyatdagi muammolarga befarq bo‘lmagan, qonun doirasida tashabbus ko‘rsatib, maktab, mahalla va yurt rivojiga amaliy hissa qo‘shuvchi mas'uliyatli shaxsdir.</p>
+            
+            <h3 style="color: var(--mint); margin-top: 1.5rem; margin-bottom: 0.8rem;">Faol fuqaroning 5 ta muhim fazilati:</h3>
+            <div class="grid-cards">
+                <div class="mini-card">
+                    <h3>1. Mas'uliyatlilik</h3>
+                    <p>O'z xatti-harakatlari va ularning jamiyat hamda atrof-muhitga ta'siri uchun javobgarlikni his etadi.</p>
+                </div>
+                <div class="mini-card">
+                    <h3>2. Tashabbuskorlik</h3>
+                    <p>O'zgarishlarni boshqalardan kutmaydi, muammoni hal qilish uchun birinchi bo'lib taklif va harakat boshlaydi.</p>
+                </div>
+                <div class="mini-card">
+                    <h3>3. Huquqiy madaniyat</h3>
+                    <p>Qonunlarga rioya qiladi, o'z huquqlarini bilsa-da, boshqalarning huquq va manfaatlarini ham hurmat qiladi.</p>
+                </div>
+                <div class="mini-card">
+                    <h3>4. Daxldorlik hissi</h3>
+                    <p>Maktab, mahalla yoki davlatdagi muammoni "o'ziniki" deb biladi va uni bartaraf etishga intiladi.</p>
+                </div>
+                <div class="mini-card">
+                    <h3>5. Hamkorlik va bag'rikenglik</h3>
+                    <p>Jamoada ishlashni biladi, boshqalar fikrini tinglaydi va umumiy manfaat yo'lida birlasha oladi.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2-BO'LIM -->
+        <div id="sec2" class="content-section">
+            <h2>📊 2. Tanlangan Muammo va So'rovnoma Natijalari</h2>
+            <p><strong>Tanlangan muammo:</strong> Maktab va mahallasida ekologik mas'uliyat yetishmasligi (chiqindilarni saralamaslik va maishiy chiqindilarning to'planib qolishi).</p>
+            <p><strong>So'rovnoma:</strong> Maktab o'quvchilari va mahalla yoshlari o'rtasida 6 ta savoldan iborat anonim so'rovnoma o'tkazildi (Jami: 50 nafar retspondent).</p>
+
+            <h3 style="color: var(--mint); margin-top: 1.5rem; margin-bottom: 0.8rem;">Natijalar (Diagramma ko'rinishida):</h3>
+            
+            <div class="stat-bar">
+                <div class="stat-title">
+                    <span>1. Chiqindilarni saralab tashlash qoidalarini bilasizmi?</span>
+                    <span><strong>68% Ha</strong></span>
+                </div>
+                <div class="bar-container"><div class="bar-fill" style="width: 68%;"></div></div>
+            </div>
+
+            <div class="stat-bar">
+                <div class="stat-title">
+                    <span>2. Mahallangizdagi ekologik muammolarga befarqmizsiz?</span>
+                    <span><strong>82% Yo'q (Befarq emasman)</strong></span>
+                </div>
+                <div class="bar-container"><div class="bar-fill" style="width: 82%;"></div></div>
+            </div>
+
+            <div class="stat-bar">
+                <div class="stat-title">
+                    <span>3. Maktabda hashar/daraxt ekish ishlarida o'z xohishingiz bilan qatnashasizmi?</span>
+                    <span><strong>74% Ha</strong></span>
+                </div>
+                <div class="bar-container"><div class="bar-fill" style="width: 74%;"></div></div>
+            </div>
+
+            <div class="stat-bar">
+                <div class="stat-title">
+                    <span>4. Atrofga chiqindi tashlagan tengdoshingizga tanbeh berasizmi?</span>
+                    <span><strong>44% Ha</strong></span>
+                </div>
+                <div class="bar-container"><div class="bar-fill" style="width: 44%;"></div></div>
+            </div>
+
+            <h3 style="color: var(--mint); margin-top: 1.5rem;">Dalilli Xulosalar:</h3>
+            <ol>
+                <li><strong>1-Xulosa:</strong> So'rovnomada qatnashganlarning aksariyati (82%) ekologik muammolarga befarq emas va amaliy harakatlarga tayyor, ammo targ'ibot yetarli emas.</li>
+                <li><strong>2-Xulosa:</strong> Faqat 44% o'quvchilar qoidabuzarlikka bevosita munosabat bildiradi. Bu esa fuqarolik mas'uliyati hamda nazoratini kuchaytirish zarurligini ko'rsatadi.</li>
+            </ol>
+        </div>
+
+        <!-- 3-BO'LIM -->
+        <div id="sec3" class="content-section">
+            <h2>📜 3. Huquqiy va Konstitutsiyaviy Tahlil</h2>
+            <p>Atrof-muhitni muhofaza qilish va ekologik mas'uliyat shunchaki ijtimoiy burch emas, balki qonuniy majburiyatdir:</p>
+            <ul>
+                <li><strong>Konstitutsiyaviy burch (O'zbekiston Respublikasi Konstitutsiyasi):</strong> Fuqarolar atrof-muhitga ehtiyotkorona munosabatda bo‘lishga, tabiatni va uning boyliklarini asrashga majburdirlar.</li>
+                <li><strong>Fuqaroning huquqi:</strong> Har bir shaxs qulay atrof-muhitga va uning holati haqida ishonchli axborotga ega bo'lish huquqiga ega.</li>
+                <li><strong>Shaxsan mas'uliyat va qonuniylik:</strong> Jamiyatdagi muammoni hal qilishda o'zboshimchalik emas, balki "Jamoatchilik nazorati to'g'risida"gi va ekologik qonunlar doirasida taklif va tashabbuslar bilan chiqish talab etiladi.</li>
+            </ul>
+        </div>
+
+        <!-- 4-BO'LIM -->
+        <div id="sec4" class="content-section">
+            <h2>💡 4. Real Yechimlar va Tashabbus Rejasi</h2>
+            <p><strong>Muammo uchun 3 ta real yechim:</strong></p>
+            <ol>
+                <li><strong>1-yechim:</strong> Maktab va mahallada eko-stendlar o'rnatish va axborot bukletlarini tarqatish.</li>
+                <li><strong>2-yechim:</strong> Chiqindilarni saralash (qog'oz, plastik) uchun maxsus qutilar qo'yish va "Eng yashil sinf" tanlovini o'tkazish.</li>
+                <li><strong>3-yechim:</strong> Mahalla bilan hamkorlikda haftalik voluntary ekologik reydlar uyushtirish.</li>
+            </ol>
+
+            <p style="margin-top: 1rem;"><strong>Tanlangan eng maqbul yechim:</strong> <u>2-yechim</u> (Mezon: Qonuniylik — yuqori, Foydalilik — juda yuqori, Amalga oshirish imkoniyati — real).</p>
+
+            <h3 style="color: var(--mint); margin-top: 1.5rem; margin-bottom: 0.8rem;">"Yashil Maktab" Tashabbuskorlik Rejasi:</h3>
+            <table>
+                <tr>
+                    <th>Kim (Mas'ul)</th>
+                    <th>Nima (Harakat)</th>
+                    <th>Qachon</th>
+                    <th>Qanday (Usul)</th>
+                </tr>
+                <tr>
+                    <td>9-sinf o'quvchilari</td>
+                    <td>Sinf xonalariga plastik va qog'oz uchun idishlar qo'yish</td>
+                    <td>1-hafta</td>
+                    <td>O'quvchilar va homiylar ko'magida</td>
+                </tr>
+                <tr>
+                    <td>Tashabbuskor guruh</td>
+                    <td>Targ'ibot va tushuntirish ishlarini olib borish</td>
+                    <td>Doimiy</td>
+                    <td>Afisha va taqdimotlar orqali</td>
+                </tr>
+                <tr>
+                    <td>Maktab ma'muriyati</td>
+                    <td>Toplangan ikkilamchi xomashyoni topshirishni tashkillash</td>
+                    <td>Har oy oxirida</td>
+                    <td>Qayta ishlash korxonalari bilan shartnoma orqali</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- 5-BO'LIM -->
+        <div id="sec5" class="content-section">
+            <h2>🏆 5. Yakuniy Positsiya va Dalillar</h2>
+            <p><strong>Savol:</strong> "Faol fuqarolik jamiyatdagi ijobiy o‘zgarishlarga yordam beradimi?"</p>
+            <p><strong>Bizning pozitsiyamiz:</strong> <span style="font-size: 1.2rem; color: var(--neon-green);"><strong>"HA"</strong></span></p>
+
+            <h3 style="color: var(--mint); margin-top: 1.2rem;">Ushbu pozitsiyani tasdiqlovchi 3 ta asosli dalil:</h3>
+            <ol>
+                <li><strong>1-Dalil (Amaliy natija):</strong> Fuqaro o'z tashabbusi bilan chiqqanda muammo tezroq barham topadi. Masalan, maktabda o'quvchilar chiqindini saralashni boshlasa, atrof-muhit tozaligi 60% ga yaxshilanadi.</li>
+                <li><strong>2-Dalil (Huquqiy faollik):</strong> Faol fuqarolar jamiyatda jamoatchilik nazoratini o'rnatadi. Bu esa davlat organlari va boshqa shaxslarning mas'uliyatini va qonunga rioya qilishini oshiradi.</li>
+                <li><strong>3-Dalil (Tarbiyaviy ta'sir):</strong> Bitta faol fuqaroning ijobiy harakati atrofidagilarga (oilasi, tengdoshlari, mahalla) o'rnak bo'ladi va ommaviy madaniyat shakllanishiga olib keladi.</li>
+            </ol>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 9-sinf BSB-1 Loyiha ishi. "Faol fuqaro – o‘zgarishlar tashabbuskori".</p>
+    </footer>
+
+    <script>
+        function switchTab(event, sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(sec => sec.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(sectionId).classList.add('active');
+            event.currentTarget.classList.add('active');
+
+            createFireEffect(event.clientX, event.clientY);
+        }
+
+        let lastMove = 0;
+        document.addEventListener('mousemove', (e) => {
+            const now = Date.now();
+            if (now - lastMove > 70) {
+                lastMove = now;
+                createLeaf(e.pageX, e.pageY);
+            }
+        });
+
+        function createLeaf(x, y) {
+            const leaf = document.createElement('div');
+            leaf.classList.add('leaf-particle');
+            const leaves = ['🌿', '🍃', '🌱', '☘️'];
+            leaf.innerText = leaves[Math.floor(Math.random() * leaves.length)];
+            
+            const randX = (Math.random() - 0.5) * 60 + 'px';
+            leaf.style.setProperty('--rand-x', randX);
+            
+            leaf.style.left = x + 'px';
+            leaf.style.top = y + 'px';
+            
+            document.body.appendChild(leaf);
+
+            setTimeout(() => {
+                leaf.remove();
+            }, 1000);
+        }
+
+        const interactiveElements = document.querySelectorAll('.content-section, .tab-btn');
+        interactiveElements.forEach(el => {
+            el.addEventListener('click', (e) => {
+                createFireEffect(e.pageX, e.pageY);
+            });
+        });
+
+        function createFireEffect(x, y) {
+            for (let i = 0; i < 5; i++) {
+                const fire = document.createElement('div');
+                fire.classList.add('fire-particle');
+                const fires = ['🔥', '✨', '🌟', '💥'];
+                fire.innerText = fires[Math.floor(Math.random() * fires.length)];
+                
+                const fireX = (Math.random() - 0.5) * 80 + 'px';
+                fire.style.setProperty('--fire-x', fireX);
+                
+                fire.style.left = (x + (Math.random() - 0.5) * 30) + 'px';
+                fire.style.top = (y + (Math.random() - 0.5) * 30) + 'px';
+                
+                document.body.appendChild(fire);
+
+                setTimeout(() => {
+                    fire.remove();
+                }, 800);
+            }
+        }
+    </script>
+</body>
+</html>
