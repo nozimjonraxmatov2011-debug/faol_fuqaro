@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>9-sinf BSB-1: Faol fuqaro – o‘zgarishlar tashabbuskori</title>
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js Kutubxonasi (Diagrammalar uchun) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --bg-dark: #071f0e;
@@ -159,30 +162,39 @@
             color: var(--neon-green);
         }
 
-        /* Stat/Progress Bars */
-        .stat-bar {
-            margin-bottom: 1.2rem;
-        }
-        .stat-title {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.3rem;
-            font-size: 0.9rem;
-        }
-        .bar-container {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            height: 18px;
-            overflow: hidden;
-            border: 1px solid var(--eco-green);
-        }
-        .bar-fill {
-            background: linear-gradient(90deg, var(--eco-green), var(--neon-green));
-            height: 100%;
-            border-radius: 10px;
+        /* Chart Styling */
+        .charts-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 1.5rem 0;
         }
 
-        /* Grid layouts */
+        .chart-box {
+            background: rgba(7, 31, 14, 0.85);
+            border: 1px solid var(--eco-green);
+            border-radius: 14px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .chart-box h4 {
+            color: var(--mint);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .analysis-box {
+            background: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid var(--neon-green);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+
         .grid-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -237,16 +249,13 @@
 <body>
 
     <header>
-        <h1>9-SINF BSB-1 LOYIHA ISHI <p><p></p></p>
-            <h2>Rahmatov Nozimjon</h2>
-        </h1>
+        <h1>9-SINF BSB-1 LOYIHA ISHI</h1>
         <p>Tarbiya hamda Davlat va huquq asoslari fanlari integratsiyasi</p>
-        
     </header>
 
     <div class="nav-tabs">
         <button class="tab-btn active" onclick="switchTab(event, 'sec1')">1. Ta'rif va Fazilatlar</button>
-        <button class="tab-btn" onclick="switchTab(event, 'sec2')">2. Muammo va So'rovnoma</button>
+        <button class="tab-btn" onclick="switchTab(event, 'sec2')">2. Muammo va Diagramma</button>
         <button class="tab-btn" onclick="switchTab(event, 'sec3')">3. Huquqiy Tahlil</button>
         <button class="tab-btn" onclick="switchTab(event, 'sec4')">4. Yechimlar va Reja</button>
         <button class="tab-btn" onclick="switchTab(event, 'sec5')">5. Yakuniy Xulosa</button>
@@ -284,51 +293,33 @@
             </div>
         </div>
 
-        <!-- 2-BO'LIM -->
+        <!-- 2-BO'LIM: DIAGRAMMALI QISM -->
         <div id="sec2" class="content-section">
-            <h2>📊 2. Tanlangan Muammo va So'rovnoma Natijalari</h2>
+            <h2>📊 2. Tanlangan Muammo va So'rovnoma Diagrammasi</h2>
             <p><strong>Tanlangan muammo:</strong> Maktab va mahallasida ekologik mas'uliyat yetishmasligi (chiqindilarni saralamaslik va maishiy chiqindilarning to'planib qolishi).</p>
-            <p><strong>So'rovnoma:</strong> Maktab o'quvchilari va mahalla yoshlari o'rtasida 6 ta savoldan iborat anonim so'rovnoma o'tkazildi (Jami: 50 nafar retspondent).</p>
+            <p><strong>So'rovnoma haqida:</strong> Maktab o'quvchilari va mahalla yoshlari o'rtasida 6 ta savoldan iborat anonim so'rovnoma o'tkazildi (Jami rеtspondentlar: 50 nafar).</p>
 
-            <h3 style="color: var(--mint); margin-top: 1.5rem; margin-bottom: 0.8rem;">Natijalar (Diagramma ko'rinishida):</h3>
-            
-            <div class="stat-bar">
-                <div class="stat-title">
-                    <span>1. Chiqindilarni saralab tashlash qoidalarini bilasizmi?</span>
-                    <span><strong>68% Ha</strong></span>
+            <!-- DIAGRAMMALAR UCHUN BLOK -->
+            <div class="charts-wrapper">
+                <div class="chart-box">
+                    <h4>Chiqindilarni saralash qoidalarini bilish darajasi (%)</h4>
+                    <canvas id="pieChart"></canvas>
                 </div>
-                <div class="bar-container"><div class="bar-fill" style="width: 68%;"></div></div>
+                <div class="chart-box">
+                    <h4>O'quvchilarning ekologik faollik so'rovnomasi natijalari (%)</h4>
+                    <canvas id="barChart"></canvas>
+                </div>
             </div>
 
-            <div class="stat-bar">
-                <div class="stat-title">
-                    <span>2. Mahallangizdagi ekologik muammolarga befarqmizsiz?</span>
-                    <span><strong>82% Yo'q (Befarq emasman)</strong></span>
-                </div>
-                <div class="bar-container"><div class="bar-fill" style="width: 82%;"></div></div>
+            <!-- DIAGRAMMALAR TAHLILI -->
+            <div class="analysis-box">
+                <h3 style="color: var(--neon-green); margin-bottom: 0.8rem;">📈 Diagrammalar va So'rovnoma Tahlili:</h3>
+                <ol>
+                    <li><strong>Aholi xabardorligi:</strong> Birinchi diagrammaga ko'ra, respondentlarning <strong>68% qismi</strong> chiqindilarni saralash qoidalaridan xabardor. Biroq 32% hali ham yetarli ma'lumotga ega emas. Bu maktab va mahallada targ'ibot ishlarini oshirish zarurligini ko'rsatadi.</li>
+                    <li><strong>Ekologik mas'uliyat va amaliyot:</strong> Ikkinchi diagramma tahliliga ko'ra, <strong>82% o'quvchi</strong> ekologik muammolarga befarq emas va <strong>74% o'quvchi</strong> ekologik hashar hamda daraxt ekish ishlarida tayyor. Ammo atrofga chiqindi tashlayotganlarga nobo'lsin deb tanbeh beruvchilar soni atigi <strong>44% ni</strong> tashkil etadi.</li>
+                    <li><strong>Chiqarilgan Dalilli Xulosa:</strong> O'quvchilarda nazariy bilim va xohish bor, lekin ularni amaliy birlashtiruvchi "Eko-tashabbus" tizimi hamda fuqarolik nazorati yetishmaydi.</li>
+                </ol>
             </div>
-
-            <div class="stat-bar">
-                <div class="stat-title">
-                    <span>3. Maktabda hashar/daraxt ekish ishlarida o'z xohishingiz bilan qatnashasizmi?</span>
-                    <span><strong>74% Ha</strong></span>
-                </div>
-                <div class="bar-container"><div class="bar-fill" style="width: 74%;"></div></div>
-            </div>
-
-            <div class="stat-bar">
-                <div class="stat-title">
-                    <span>4. Atrofga chiqindi tashlagan tengdoshingizga tanbeh berasizmi?</span>
-                    <span><strong>44% Ha</strong></span>
-                </div>
-                <div class="bar-container"><div class="bar-fill" style="width: 44%;"></div></div>
-            </div>
-
-            <h3 style="color: var(--mint); margin-top: 1.5rem;">Dalilli Xulosalar:</h3>
-            <ol>
-                <li><strong>1-Xulosa:</strong> So'rovnomada qatnashganlarning aksariyati (82%) ekologik muammolarga befarq emas va amaliy harakatlarga tayyor, ammo targ'ibot yetarli emas.</li>
-                <li><strong>2-Xulosa:</strong> Faqat 44% o'quvchilar qoidabuzarlikka bevosita munosabat bildiradi. Bu esa fuqarolik mas'uliyati hamda nazoratini kuchaytirish zarurligini ko'rsatadi.</li>
-            </ol>
         </div>
 
         <!-- 3-BO'LIM -->
@@ -403,7 +394,9 @@
         <p>&copy; 2026 9-sinf BSB-1 Loyiha ishi. "Faol fuqaro – o‘zgarishlar tashabbuskori".</p>
     </footer>
 
+    <!-- JavaScript Diagramma va Effektlar -->
     <script>
+        // Tablarni o'tkazish
         function switchTab(event, sectionId) {
             const sections = document.querySelectorAll('.content-section');
             sections.forEach(sec => sec.classList.remove('active'));
@@ -417,6 +410,52 @@
             createFireEffect(event.clientX, event.clientY);
         }
 
+        // 1. Doiraviy Diagramma (Pie Chart)
+        const ctxPie = document.getElementById('pieChart').getContext('2d');
+        new Chart(ctxPie, {
+            type: 'pie',
+            data: {
+                labels: ['Biladi (68%)', 'Bilmaydi (32%)'],
+                datasets: [{
+                    data: [68, 32],
+                    backgroundColor: ['#00ff66', '#e74c3c'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { labels: { color: '#e0f8e5' } }
+                }
+            }
+        });
+
+        // 2. Ustunli Diagramma (Bar Chart)
+        const ctxBar = document.getElementById('barChart').getContext('2d');
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Befarq emas', 'Hasharda tayyor', 'Tanbeh beradi'],
+                datasets: [{
+                    label: 'O\'quvchilar javobi (%)',
+                    data: [82, 74, 44],
+                    backgroundColor: ['#2ecc71', '#00ff66', '#f1c40f'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true, max: 100, ticks: { color: '#e0f8e5' } },
+                    x: { ticks: { color: '#e0f8e5' } }
+                },
+                plugins: {
+                    legend: { labels: { color: '#e0f8e5' } }
+                }
+            }
+        });
+
+        // Mishka effekti (Bargchalar)
         let lastMove = 0;
         document.addEventListener('mousemove', (e) => {
             const now = Date.now();
@@ -440,11 +479,10 @@
             
             document.body.appendChild(leaf);
 
-            setTimeout(() => {
-                leaf.remove();
-            }, 1000);
+            setTimeout(() => { leaf.remove(); }, 1000);
         }
 
+        // Olov effekti
         const interactiveElements = document.querySelectorAll('.content-section, .tab-btn');
         interactiveElements.forEach(el => {
             el.addEventListener('click', (e) => {
@@ -467,9 +505,7 @@
                 
                 document.body.appendChild(fire);
 
-                setTimeout(() => {
-                    fire.remove();
-                }, 800);
+                setTimeout(() => { fire.remove(); }, 800);
             }
         }
     </script>
